@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<style>
+    #errmsg
+    {
+    color: red;
+    }
+</style>
+<html>
+    <body>
+        <h1>Enter the Number to get the Fibonacci Number </h1>
+
+            <input type="text" name="fname" id = "fibo_input" placeholder="Enter a Number">
+            <span id="errmsg"></span>
+            <br><br>
+            <button type='submit'  id = "fibo">Submit</button>
+        <div>
+            <h4 id = "result">
+            </h4>
+        </div>
+        <div>
+            <button type='submit'  id = "go_back">GO Back</button>
+        </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            $("#go_back").hide()
+        })
+    </script>
+    <script>
+        $("#fibo").click(function(){
+            var data = $("#fibo_input").val()
+            $.ajax({
+                url:"http://127.0.0.1:8000/srv/fiboData",
+                data:JSON.stringify({'number':data}),
+                type:"POST",
+                success: function (msg) {
+                    $("#fibo_input, #fibo").hide()
+                    $("#go_back").show()
+                    console.log(msg)
+                    data = JSON.parse(msg)
+                    if (data["status"] == "success"){
+                        $("#result").text("Fibonacci value : "+data["fibo_data"]+", Execution Time is : "+data["time_consumed"]+" Seconds")
+                    }
+                    else{
+                        $("#result").text("Unable to Calculate Fibonacci Number, Please try")
+                    }
+                }
+            })
+        });
+    </script>
+    <script>
+        $("#go_back").click(function(){
+            location.reload(); 
+            $("#fibo_input").val("")
+        })
+    </script>
+    <script>
+        $(document).ready(function () {
+            //called when key is pressed in textbox
+            $("#fibo_input").keypress(function (e) {
+                //if the letter is not digit then display error and don't type anything
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    //display error message
+                    $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                        return false;
+                }
+            });
+            });$(document).ready(function () {
+            //called when key is pressed in textbox
+            $("#fibo_input").keypress(function (e) {
+                //if the letter is not digit then display error and don't type anything
+                if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    //display error message
+                    $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                        return false;
+                }
+            });
+            });
+    </script>
+    </body>
+</html>
