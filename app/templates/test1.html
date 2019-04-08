@@ -30,7 +30,8 @@
         $("#fibo").click(function(){
             var data = $("#fibo_input").val()
             $.ajax({
-                url:"http://127.0.0.1:8000/srv/fiboData",
+                // url:"http://127.0.0.1:8000/srv/fiboData",
+                url:"https://fibodemo.herokuapp.com/srv/fiboData",
                 data:JSON.stringify({'number':data}),
                 type:"POST",
                 success: function (msg) {
